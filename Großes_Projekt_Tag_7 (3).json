@@ -1,0 +1,1205 @@
+{
+  "name": "Großes_Projekt_Tag_7",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Open an IT Service Ticket",
+        "formDescription": "Give us a precise description of your problem.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "What is your name?"
+            },
+            {
+              "fieldLabel": "What is your email adress?",
+              "fieldType": "email"
+            },
+            {
+              "fieldLabel": "When did the issue occur? Add precise date.",
+              "fieldType": "date",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "What system was affected?",
+              "fieldType": "checkbox",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Microsoft Outlook "
+                  },
+                  {
+                    "option": "Crucial system"
+                  },
+                  {
+                    "option": "Hardware"
+                  },
+                  {
+                    "option": "Other"
+                  }
+                ]
+              },
+              "limitSelection": "exact",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Help us prioritize the issue by indicating urgency.",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "High"
+                  },
+                  {
+                    "option": "Medium"
+                  },
+                  {
+                    "option": "Low"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Additional information helps! Please describe the issue.",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "We are faster if we know where the issue occurred so please indicate your business function and organisation name (Sales/Logistics/Procurement/or else))",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        0,
+        0
+      ],
+      "id": "3e197eb5-bf3e-4a22-908c-083645d37fa4",
+      "name": "On form submission",
+      "webhookId": "d7a0074c-24ae-4d34-a13f-5ad9f1181354"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "filters": {
+          "labelIds": [
+            "Label_7423475356324632024"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        432
+      ],
+      "id": "6804a26b-eca9-40a7-8eb3-416685ecaf4a",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "j0uAnmJw7GViKuhc",
+          "name": "Gmail account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3d413ca3-594a-4452-8635-2eba4e47248f",
+              "name": "System",
+              "value": "={{ $('On form submission').item.json['What system was affected?'][0] }}",
+              "type": "string"
+            },
+            {
+              "id": "4a674794-11cc-4c3d-a947-331cbacb4ebf",
+              "name": "Priority",
+              "value": "={{ $json[\"Help us prioritize the issue by indicating urgency.\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "bf5baac9-be7e-46b0-ad56-080d7b882436",
+              "name": "Information",
+              "value": "={{ $json[\"Additional information helps! Please describe the issue.\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "062d1352-dbb3-41ab-a116-776dffcb929a",
+              "name": "Organisation",
+              "value": "={{ $json[\"We are faster if we know where the issue occurred so please indicate your business function and organisation name (Sales/Logistics/Procurement/or else))\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "260edbc6-8a0b-47f4-bc21-c510a3e2367f",
+              "name": "Email",
+              "value": "={{ $json['What is your email adress?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "f8b7cb5a-5955-48c5-bdbd-b8bf30c01469",
+              "name": "Name",
+              "value": "={{ $json['What is your name?'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        272,
+        0
+      ],
+      "id": "c8c7a11b-d901-4341-85e2-8f9532021eab",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        272,
+        432
+      ],
+      "id": "862d0426-6cca-445a-b2a4-40d46f3e44db",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "798b432d-d0be-43e1-9c4c-3eddc8321423",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "ccb95819-8aed-41e0-a1d9-9467e7d6d91d",
+              "leftValue": "={{ $json['property_lösung'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "e23b66d1-13cb-4553-9498-f00996171644",
+              "leftValue": "={{ String($('Edit Fields').item.json.System).trim().toLowerCase() !== 'other' }}",
+              "rightValue": "Other",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        752,
+        0
+      ],
+      "id": "f38605c3-78f7-4e07-975d-49a31e9bb61a",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "dataSourceId": {
+          "__rl": true,
+          "value": "3ec82bab-a781-80ee-a813-000b4a5b58de",
+          "mode": "list",
+          "cachedResultName": "n8n Use Case",
+          "cachedResultUrl": "https://app.notion.com/p/3ec82baba781806cbeefc594efc8fe60"
+        },
+        "limit": 1,
+        "filterType": "manual",
+        "filters": {
+          "conditions": [
+            {
+              "key": "System|select",
+              "condition": "equals",
+              "optionValue": "={{ $json.System }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        528,
+        0
+      ],
+      "id": "77cfbe58-5595-48a1-9505-46c269de86d0",
+      "name": "Get many database pages",
+      "alwaysOutputData": true,
+      "credentials": {
+        "notionApi": {
+          "id": "dO8voxuzo66tVKdR",
+          "name": "Notion account"
+        }
+      },
+      "disabled": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0150d383-b6c9-4238-8ec0-94d1032d9e7d",
+              "name": "Email",
+              "value": "={{ $('Edit Fields').item.json.Email }}",
+              "type": "string"
+            },
+            {
+              "id": "9500689b-9f69-45ea-a49c-e0874cec7cb0",
+              "name": "Name",
+              "value": "={{ $('Edit Fields').item.json.Name}}",
+              "type": "string"
+            },
+            {
+              "id": "658cfa34-e474-4417-9369-ec05c025d6e0",
+              "name": "System",
+              "value": "={{ $('Edit Fields').item.json.System }}",
+              "type": "string"
+            },
+            {
+              "id": "08fbe5b7-18bf-45ad-be66-c9f9970fd363",
+              "name": "Information",
+              "value": "={{ $('Edit Fields').item.json.Information }}",
+              "type": "string"
+            },
+            {
+              "id": "db89ffad-72bc-4a63-a661-d85fa757e2ae",
+              "name": "Solution",
+              "value": "={{ $json['property_lösung'] }}",
+              "type": "string"
+            },
+            {
+              "id": "30f01d7b-a93a-4df5-b732-2b8606e2ab90",
+              "name": "NotionUrl",
+              "value": "={{ $json.url }}",
+              "type": "string"
+            },
+            {
+              "id": "cc2ef74a-8557-4a0c-b9af-70d98c341910",
+              "name": "Betreff",
+              "value": "=Re: Your IT service ticket – {{ $('Edit Fields').item.json.System }}",
+              "type": "string"
+            },
+            {
+              "id": "85a7c3fb-c37d-4234-8c73-f090f9ffacea",
+              "name": "Antwort",
+              "value": "=Hello {{ $('Edit Fields').item.json.Name }},  thank you for your request. We have checked your issue: \"{{ $('Edit Fields').item.json.Information }}\"  Here is the solution: {{ $json['property_lösung'] }}  If this does not solve your problem, simply reply to this email and our support team will take care of it.  Kind regards Your IT Service Desk",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1008,
+        -208
+      ],
+      "id": "619fdbdb-f2bf-4e61-91e6-e173320d9730",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "fflhr@posteo.de",
+        "subject": "=Freigabe erforderlich: Antwortvorschlag für {{ $('On form submission').item.json['What is your name?'] }}",
+        "message": "=Neue Anfrage mit Lösungsvorschlag aus der Wissensdatenbank.\n\n  Kunde: {{ $json.Name }} ({{ $json.Email }})\n  System: {{ $json.System }}\n  Anfrage: {{ $json.Anfrage }}\n\n  --- Vorgeschlagene Antwort ---\n  {{ $json.Antwort }}\n\n  Wissenseintrag: {{ $json.NotionUrl }}",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1280,
+        224
+      ],
+      "id": "9f4bc106-1417-43fe-9c89-48de4b8c93f2",
+      "name": "Send message and wait for response",
+      "webhookId": "6bc0aca0-61c6-4bc3-a678-6cd6e7cf7564",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "j0uAnmJw7GViKuhc",
+          "name": "Gmail account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "89a07319-b549-4ff8-9bb5-1c3eab2829b4",
+              "name": "Name",
+              "value": "={{ $('On form submission').item.json['What is your name?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "104b2f80-0255-4f3f-81e1-3962cb711afc",
+              "name": "Email",
+              "value": "={{ $('On form submission').item.json['What is your email adress?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "ef5acbf2-10df-450d-b60e-0d7c7941ed0d",
+              "name": "System",
+              "value": "={{ $('Edit Fields').item.json.System }}",
+              "type": "string"
+            },
+            {
+              "id": "9fa59fb2-b86a-471a-a9bf-ca3d5ac9f503",
+              "name": "Information",
+              "value": "={{ $('Edit Fields').item.json.Information }}",
+              "type": "string"
+            },
+            {
+              "id": "7c0bc161-bbfa-4344-aaa5-efbd12e79c7e",
+              "name": "Loesung",
+              "value": "={{ $json['property_lösung'] }}",
+              "type": "string"
+            },
+            {
+              "id": "fb2f4960-9e00-42f5-ac9e-f1c6316ac285",
+              "name": "NotionUrl",
+              "value": "={{ $json.url }}",
+              "type": "string"
+            },
+            {
+              "id": "8ff3c330-e7dc-419c-b272-7c22ce7685a9",
+              "name": "Betreff",
+              "value": "=Re: Your IT service ticket – {{ $('Edit Fields').item.json.System }}",
+              "type": "string"
+            },
+            {
+              "id": "0d0070b1-3a79-4d90-aff6-eb2b45b7f18d",
+              "name": "Antwort",
+              "value": "=Hello {{ $('On form submission').item.json['What is your name?'] }},  thank you for your request. We have checked your issue: \"{{ $('Edit Fields').item.json.Information }}\"  Here is the solution: {{ $json['property_lösung'] }}  If this does not solve your problem, simply reply to this email and our support team will take care of it.  Kind regards Your IT Service Desk",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1024,
+        112
+      ],
+      "id": "111d2f86-47eb-4563-8a81-bd74b89939d9",
+      "name": "Antwortvorschlag"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "4991f50b-17bf-41ac-b825-a3c2cab68458",
+              "leftValue": "={{ $json.data.approved }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1552,
+        224
+      ],
+      "id": "3136e58c-f70f-45ac-babd-7a065111048f",
+      "name": "Fregegeben?"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Antwortvorschlag').item.json.Email }}",
+        "subject": "={{ $('Antwortvorschlag').item.json.Betreff }}",
+        "message": "={{ $('Antwortvorschlag').item.json.Antwort }}",
+        "options": {
+          "appendAttribution": true
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1840,
+        -48
+      ],
+      "id": "a7bd7765-d258-4dcc-abeb-16f8a49ad56c",
+      "name": "Kundenantwort",
+      "webhookId": "a871bf04-6602-4115-a2d7-1670f05a0254",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "j0uAnmJw7GViKuhc",
+          "name": "Gmail account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "dataSourceId": {
+          "__rl": true,
+          "value": "3fb82bab-a781-800a-8d5c-000b26f7f3cf",
+          "mode": "list",
+          "cachedResultName": "Support-Protokoll",
+          "cachedResultUrl": "https://app.notion.com/p/3fb82baba781806bbbb6f3914c6e2753"
+        },
+        "title": "={{ $('Antwortvorschlag').item.json.Name }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Email|email",
+              "emailValue": "={{ $('Antwortvorschlag').item.json.Email }}"
+            },
+            {
+              "key": "System|rich_text",
+              "textContent": "={{ $('Antwortvorschlag').item.json.System }}"
+            },
+            {
+              "key": "Anfrage|rich_text",
+              "textContent": "={{ $('Antwortvorschlag').item.json.Information }}"
+            },
+            {
+              "key": "Status|select",
+              "selectValue": "=Automatisch beantwortet"
+            },
+            {
+              "key": "Datum|date",
+              "date": "={{ $now.toISO() }}"
+            },
+            {
+              "key": "Wissenseintrag|url",
+              "urlValue": "={{ $('Antwortvorschlag').item.json.NotionUrl }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        2128,
+        -48
+      ],
+      "id": "53eadbba-a18f-43f5-80d3-3c03e217139e",
+      "name": "Protokoll",
+      "credentials": {
+        "notionApi": {
+          "id": "dO8voxuzo66tVKdR",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d44b98f6-5f30-43b6-93e0-647c36650b77",
+              "name": "Name",
+              "value": "={{ $('On form submission').item.json['What is your name?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "2ee75be2-aad9-4bd5-bec8-ef53949292bf",
+              "name": "Email",
+              "value": "={{ $('On form submission').item.json['What is your email adress?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "774f589c-b4e9-4f8d-a43a-a8891d6dbfce",
+              "name": "System",
+              "value": "={{ $('Edit Fields').item.json.System }}",
+              "type": "string"
+            },
+            {
+              "id": "f4a9ae5d-117d-4836-a11e-e0f16f8e045f",
+              "name": "Priority",
+              "value": "={{ $('Edit Fields').item.json.Priority }}",
+              "type": "string"
+            },
+            {
+              "id": "295fb8a0-a755-4449-91ce-656199ee1ce4",
+              "name": "Information",
+              "value": "={{ $('Edit Fields').item.json.Information }}",
+              "type": "string"
+            },
+            {
+              "id": "e8044db6-3d5f-41a2-ad4c-81ace92bdc6d",
+              "name": "Organisation",
+              "value": "={{ $('Edit Fields').item.json.Organisation }}",
+              "type": "string"
+            },
+            {
+              "id": "a31982f8-47f1-4753-b965-770e8b3abb85",
+              "name": "Datum",
+              "value": "={{ $('On form submission').item.json['When did the issue occur? Add precise date.'] }}",
+              "type": "string"
+            },
+            {
+              "id": "e47f6dbe-5ee9-45f8-9a25-971a7fbedd47",
+              "name": "Grund",
+              "value": "={{ $prevNode.name === 'Freigegeben?' ? 'Suggested solution was rejected' : 'No matching solution in knowledge base' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1840,
+        400
+      ],
+      "id": "760b967e-f365-4c94-b7ca-48e5ee084152",
+      "name": "Ticket-Daten"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "fflhr@posteo.de",
+        "subject": "=[Ticket] {{ $json.System }} | {{ $json.Priority }} | {{ $json.Name }}",
+        "message": "=     New support ticket – {{ $json.Grund }}\n\n     Customer: {{ $json.Name }} ({{ $json.Email }})\n     Department: {{ $json.Organisation }}\n     System: {{ $json.System }}\n     Priority: {{ $json.Priority }}\n     Date of issue: {{ $json.Datum }}\n\n     Description:\n     {{ $json.Information }}\n\n     Please contact the customer, work on the issue, and report the result using the button below.",
+        "responseType": "customForm",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Solved",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Yes"
+                  },
+                  {
+                    "option": "No"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Steps taken",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Solution"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2096,
+        400
+      ],
+      "id": "f0d70e53-b613-4c81-9d38-29d477095a1f",
+      "name": "First Level Support",
+      "webhookId": "0b30a9e8-431a-4717-8717-787a57af911d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "j0uAnmJw7GViKuhc",
+          "name": "Gmail account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "98735e40-18f8-489b-b852-9f5daa4b3816",
+              "leftValue": "={{ $json.data.Solved }}",
+              "rightValue": "Yes",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2368,
+        400
+      ],
+      "id": "2c434e6b-7eea-49f2-a724-3992f8396742",
+      "name": "Gelöst?"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "dataSourceId": {
+          "__rl": true,
+          "value": "3fb82bab-a781-800a-8d5c-000b26f7f3cf",
+          "mode": "list",
+          "cachedResultName": "Support-Protokoll",
+          "cachedResultUrl": "https://app.notion.com/p/3fb82baba781806bbbb6f3914c6e2753"
+        },
+        "title": "={{ $('Ticket-Daten').item.json.Name }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Email|email",
+              "emailValue": "={{ $('Ticket-Daten').item.json.Email }}"
+            },
+            {
+              "key": "System|rich_text",
+              "textContent": "={{ $('Ticket-Daten').item.json.System }}"
+            },
+            {
+              "key": "Anfrage|rich_text",
+              "textContent": "={{ $('Ticket-Daten').item.json.Information }}"
+            },
+            {
+              "key": "Status|select",
+              "selectValue": "=First Level"
+            },
+            {
+              "key": "Datum|date",
+              "date": "={{ $now.toISO() }}"
+            },
+            {
+              "key": "Bearbeitungsschritte|rich_text",
+              "textContent": "={{ $('First Level Support').item.json.data['Steps taken'] }}"
+            },
+            {
+              "key": "Lösung|rich_text",
+              "textContent": "={{ $('First Level Support').item.json.data.Solution }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        2624,
+        240
+      ],
+      "id": "265cc96d-c30a-439b-9541-fd8a301cfeab",
+      "name": "Protokoll First Level",
+      "credentials": {
+        "notionApi": {
+          "id": "dO8voxuzo66tVKdR",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "fflhr@posteo.de",
+        "subject": "=     Escalated ticket – First Level could not solve the issue.\n\n     Customer: {{ $('Ticket-Daten').item.json.Name }} ({{ $('Ticket-Daten').item.json.Email }})\n     Department: {{ $('Ticket-Daten').item.json.Organisation }}\n     System: {{ $('Ticket-Daten').item.json.System }}\n     Priority: {{ $('Ticket-Daten').item.json.Priority }}\n     Date of issue: {{ $('Ticket-Daten').item.json.Datum }}\n\n     Description:\n     {{ $('Ticket-Daten').item.json.Information }}\n\n     Steps taken by First Level:\n     {{ $('First Level Support').item.json.data['Steps taken'] }}\n\n     Please solve the issue, inform the customer, and document the solution using the button below.",
+        "message": "=     Escalated ticket – First Level could not solve the issue.\n\n     Customer: {{ $('Ticket-Daten').item.json.Name }} ({{ $('Ticket-Daten').item.json.Email }})\n     Department: {{ $('Ticket-Daten').item.json.Organisation }}\n     System: {{ $('Ticket-Daten').item.json.System }}\n     Priority: {{ $('Ticket-Daten').item.json.Priority }}\n     Date of issue: {{ $('Ticket-Daten').item.json.Datum }}\n\n     Description:\n     {{ $('Ticket-Daten').item.json.Information }}\n\n     Steps taken by First Level:\n     {{ $('First Level Support').item.json.data['Steps taken'] }}\n\n     Please solve the issue, inform the customer, and document the solution using the button below.",
+        "responseType": "customForm",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Solution",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Short title"
+            },
+            {
+              "fieldLabel": "Reusable",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Yes"
+                  },
+                  {
+                    "option": "No"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2624,
+        544
+      ],
+      "id": "6cfa3c32-18e2-4cc6-83e2-ffeb5aac1e79",
+      "name": "Second Level Support",
+      "webhookId": "f74ef8b6-9906-470b-a30b-b3d527ab986a",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "j0uAnmJw7GViKuhc",
+          "name": "Gmail account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "dataSourceId": {
+          "__rl": true,
+          "value": "6b882bab-a781-83bb-a859-87f675d13e6d",
+          "mode": "list",
+          "cachedResultName": "Protokoll Second Level",
+          "cachedResultUrl": "https://app.notion.com/p/3fb82baba78180c58471c44313a3f7c9"
+        },
+        "title": "={{ $('Ticket-Daten').item.json.Name }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Email|email",
+              "emailValue": "={{ $('Ticket-Daten').item.json.Email }}"
+            },
+            {
+              "key": "System|rich_text",
+              "textContent": "={{ $('Ticket-Daten').item.json.System }}"
+            },
+            {
+              "key": "Anfrage|rich_text",
+              "textContent": "={{ $('Ticket-Daten').item.json.Information }}"
+            },
+            {
+              "key": "Status|select",
+              "selectValue": "=Second Level"
+            },
+            {
+              "key": "Datum|date",
+              "date": "={{ $now.toISO() }}"
+            },
+            {
+              "key": "Bearbeitungsschritte|rich_text",
+              "textContent": "={{ $('First Level Support').item.json.data['Steps taken'] }}"
+            },
+            {
+              "key": "Lösung|rich_text",
+              "textContent": "={{ $('Second Level Support').item.json.data.Solution }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        2848,
+        544
+      ],
+      "id": "919a937c-85a4-4b3f-85de-21220e0b4681",
+      "name": "Protokoll Second Level",
+      "credentials": {
+        "notionApi": {
+          "id": "dO8voxuzo66tVKdR",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "f7ad12bd-ae57-44dc-9148-0efd78e2c65d",
+              "leftValue": "={{ $('Second Level Support').item.json.data.Reusable }}",
+              "rightValue": "Yes",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        3072,
+        544
+      ],
+      "id": "442ba63c-cce9-4252-b4ec-bedc3a6a45a8",
+      "name": "Wiederverwendbar?"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "dataSourceId": {
+          "__rl": true,
+          "value": "3ec82bab-a781-80ee-a813-000b4a5b58de",
+          "mode": "list",
+          "cachedResultName": "n8n Use Case",
+          "cachedResultUrl": "https://app.notion.com/p/3ec82baba781806cbeefc594efc8fe60"
+        },
+        "title": "={{ $('Second Level Support').item.json.data['Short title'] }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "System|select",
+              "selectValue": "={{ $('Ticket-Daten').item.json.System }}"
+            },
+            {
+              "key": "Priority|select",
+              "selectValue": "={{ $('Ticket-Daten').item.json.Priority }}"
+            },
+            {
+              "key": "Organisation|select",
+              "selectValue": "={{ $('Ticket-Daten').item.json.Organisation }}"
+            },
+            {
+              "key": "Information|rich_text",
+              "textContent": "={{ $('Ticket-Daten').item.json.Information }}"
+            },
+            {
+              "key": "Lösung|rich_text",
+              "textContent": "={{ $('Second Level Support').item.json.data.Solution }}"
+            },
+            {
+              "key": "Ausführungszeitraum|date",
+              "date": "={{ $now.toISO() }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 3,
+      "position": [
+        3296,
+        448
+      ],
+      "id": "51b8780f-cc9d-4c8f-8abe-014be97f6f21",
+      "name": "Neuer Wissenseintrag",
+      "credentials": {
+        "notionApi": {
+          "id": "dO8voxuzo66tVKdR",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "fflhr@posteo.de",
+        "subject": "=[FALLBACK] Technical error – please handle manually: {{ $('Edit Fields').item.json.System }}",
+        "message": "= The automated support workflow could not process this request due to a technical error.      Please handle it via the manual support process.       Customer: {{ $('On form submission').item.json['What is your name?'] }} ({{ $('On form submission').item.json['What is your email adress?'] }})      Department: {{ $('Edit Fields').item.json.Organisation }}      System: {{ $('Edit Fields').item.json.System }}      Priority: {{ $('Edit Fields').item.json.Priority }}       Description:      {{ $('Edit Fields').item.json.Information }}       Error: {{ $json.error?.message ?? 'unknown' }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        768,
+        288
+      ],
+      "id": "b11ab021-a9e9-4a8e-8603-3726c0b3bf90",
+      "name": "Fallback manueller Prozess",
+      "webhookId": "20e5f41b-96ca-4178-b137-f5d7c3d7614a",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "j0uAnmJw7GViKuhc",
+          "name": "Gmail account 4"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Get many database pages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        []
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Antwortvorschlag",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many database pages": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Fallback manueller Prozess",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Antwortvorschlag": {
+      "main": [
+        [
+          {
+            "node": "Send message and wait for response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message and wait for response": {
+      "main": [
+        [
+          {
+            "node": "Fregegeben?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fregegeben?": {
+      "main": [
+        [
+          {
+            "node": "Kundenantwort",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Ticket-Daten",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Kundenantwort": {
+      "main": [
+        [
+          {
+            "node": "Protokoll",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ticket-Daten": {
+      "main": [
+        [
+          {
+            "node": "First Level Support",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "First Level Support": {
+      "main": [
+        [
+          {
+            "node": "Gelöst?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gelöst?": {
+      "main": [
+        [
+          {
+            "node": "Protokoll First Level",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Second Level Support",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Protokoll First Level": {
+      "main": [
+        []
+      ]
+    },
+    "Second Level Support": {
+      "main": [
+        [
+          {
+            "node": "Protokoll Second Level",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Protokoll Second Level": {
+      "main": [
+        [
+          {
+            "node": "Wiederverwendbar?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wiederverwendbar?": {
+      "main": [
+        [
+          {
+            "node": "Neuer Wissenseintrag",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "3cc6dad5-6b8f-474e-8617-902988c55e00",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7b656cead8ed8224a197420151e006364d64f43b06f479af89e163962cf037aa"
+  },
+  "nodeGroups": [],
+  "id": "FJVXBzeMKGEAXR4i",
+  "tags": []
+}
